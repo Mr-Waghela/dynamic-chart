@@ -11,6 +11,7 @@
       height: 100%;
     }
     body{
+      position: relative;
       min-height: 100%;
       background-color: teal;
       display: flex;
@@ -26,9 +27,16 @@
     canvas{
       background: #fff;
     }
+    #chart{
+      opacity: 0;
+    }
+    .loader{
+      background: url('loader.png') no-repeat center center;height: 64px;width: 64px;position: absolute;transform: translate(-50%,-50%);left: 50%;top:50%;
+    }
   </style>
 </head>
 <body>
+  <div class="loader"></div>
   <div class="chart-wrap">
     <canvas id="chart" ></canvas>
   </div>
@@ -106,6 +114,8 @@
             dataset.data.push(openVal);
           });
           myChart.update();
+          document.getElementsByClassName('loader')[0].style.display = 'none';
+          document.getElementById('chart').style.opacity = '1';
       })
       .catch(function(err){
         console.log(err);
