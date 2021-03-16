@@ -85,28 +85,30 @@
     }
 
     function fetchdata(){
-      fetch('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=1min&apikey=demo')
+      fetch('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=1min&apikey=JOATDPZ20KRHOKPX')
         .then(function (response){
           return response.json();
         })
         .then(function (data){
           const dataset = data["Time Series (1min)"];
           const datakeys = Object.keys(dataset);
-          for(let i = 0; myChart.data.labels.length != 10 ; i++){
+          for(let i = 10; myChart.data.labels.length != 10 ; i--){
             myChart.data.labels.push(datakeys[i].split(' ')[1])
           }
           myChart.data.datasets.forEach((d) => {
-            for(let j = 0;j < 10; j++){
-              d.data.push(dataset[datakeys[j]]["1. open"])
+            if(d.data.length < 10){
+              for(let j = 0;j < 10; j++){
+                d.data.push(dataset[datakeys[j]]["1. open"])
+              }
             }
           });
           const val = Object.keys(dataset)[0];
           const yAxes = val.split(' ');
           const openVal = dataset[val]["1. open"];
-          if(myChart.data.labels.length >= 5){
-            myChart.data.labels.shift(openVal);
+          if(myChart.data.labels.length >= 10){
+            myChart.data.labels.shift();
           }
-          // myChart.data.labels.push(yAxes[1]);
+          myChart.data.labels.push(yAxes[1]);
           myChart.data.datasets.forEach((dataset) => {
             if(dataset.data.length >= 10){
               dataset.data.shift();
